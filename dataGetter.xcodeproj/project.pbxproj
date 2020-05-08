@@ -11,7 +11,35 @@
 		CFFED67C246471AA00E12C2B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED67B246471AA00E12C2B /* ViewController.swift */; };
 		CFFED67E246471AB00E12C2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFED67D246471AB00E12C2B /* Assets.xcassets */; };
 		CFFED681246471AB00E12C2B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFFED67F246471AB00E12C2B /* Main.storyboard */; };
+		CFFED690246471BE00E12C2B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFFED68F246471BE00E12C2B /* Cocoa.framework */; };
+		CFFED693246471BE00E12C2B /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED692246471BE00E12C2B /* SourceEditorExtension.swift */; };
+		CFFED695246471BE00E12C2B /* SourceEditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED694246471BE00E12C2B /* SourceEditorCommand.swift */; };
+		CFFED69A246471BE00E12C2B /* dataGetterExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CFFED68D246471BE00E12C2B /* dataGetterExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CFFED698246471BE00E12C2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFFED66E246471AA00E12C2B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFFED68C246471BE00E12C2B;
+			remoteInfo = dataGetterExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CFFED69E246471BE00E12C2B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CFFED69A246471BE00E12C2B /* dataGetterExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CFFED676246471AA00E12C2B /* dataGetter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dataGetter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -21,6 +49,12 @@
 		CFFED680246471AB00E12C2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CFFED682246471AB00E12C2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFFED683246471AB00E12C2B /* dataGetter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dataGetter.entitlements; sourceTree = "<group>"; };
+		CFFED68D246471BE00E12C2B /* dataGetterExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = dataGetterExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFFED68F246471BE00E12C2B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		CFFED692246471BE00E12C2B /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
+		CFFED694246471BE00E12C2B /* SourceEditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorCommand.swift; sourceTree = "<group>"; };
+		CFFED696246471BE00E12C2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFFED697246471BE00E12C2B /* dataGetterExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dataGetterExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +65,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFFED68A246471BE00E12C2B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFED690246471BE00E12C2B /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				CFFED678246471AA00E12C2B /* dataGetter */,
+				CFFED691246471BE00E12C2B /* dataGetterExtension */,
+				CFFED68E246471BE00E12C2B /* Frameworks */,
 				CFFED677246471AA00E12C2B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFED676246471AA00E12C2B /* dataGetter.app */,
+				CFFED68D246471BE00E12C2B /* dataGetterExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,6 +108,25 @@
 			path = dataGetter;
 			sourceTree = "<group>";
 		};
+		CFFED68E246471BE00E12C2B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CFFED68F246471BE00E12C2B /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CFFED691246471BE00E12C2B /* dataGetterExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CFFED692246471BE00E12C2B /* SourceEditorExtension.swift */,
+				CFFED694246471BE00E12C2B /* SourceEditorCommand.swift */,
+				CFFED696246471BE00E12C2B /* Info.plist */,
+				CFFED697246471BE00E12C2B /* dataGetterExtension.entitlements */,
+			);
+			path = dataGetterExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -73,15 +137,34 @@
 				CFFED672246471AA00E12C2B /* Sources */,
 				CFFED673246471AA00E12C2B /* Frameworks */,
 				CFFED674246471AA00E12C2B /* Resources */,
+				CFFED69E246471BE00E12C2B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CFFED699246471BE00E12C2B /* PBXTargetDependency */,
 			);
 			name = dataGetter;
 			productName = dataGetter;
 			productReference = CFFED676246471AA00E12C2B /* dataGetter.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CFFED68C246471BE00E12C2B /* dataGetterExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFFED69B246471BE00E12C2B /* Build configuration list for PBXNativeTarget "dataGetterExtension" */;
+			buildPhases = (
+				CFFED689246471BE00E12C2B /* Sources */,
+				CFFED68A246471BE00E12C2B /* Frameworks */,
+				CFFED68B246471BE00E12C2B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = dataGetterExtension;
+			productName = dataGetterExtension;
+			productReference = CFFED68D246471BE00E12C2B /* dataGetterExtension.appex */;
+			productType = "com.apple.product-type.xcode-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -94,6 +177,9 @@
 				ORGANIZATIONNAME = Oleginc;
 				TargetAttributes = {
 					CFFED675246471AA00E12C2B = {
+						CreatedOnToolsVersion = 11.4.1;
+					};
+					CFFED68C246471BE00E12C2B = {
 						CreatedOnToolsVersion = 11.4.1;
 					};
 				};
@@ -112,6 +198,7 @@
 			projectRoot = "";
 			targets = (
 				CFFED675246471AA00E12C2B /* dataGetter */,
+				CFFED68C246471BE00E12C2B /* dataGetterExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -123,6 +210,13 @@
 			files = (
 				CFFED67E246471AB00E12C2B /* Assets.xcassets in Resources */,
 				CFFED681246471AB00E12C2B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFFED68B246471BE00E12C2B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +232,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFFED689246471BE00E12C2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFFED693246471BE00E12C2B /* SourceEditorExtension.swift in Sources */,
+				CFFED695246471BE00E12C2B /* SourceEditorCommand.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CFFED699246471BE00E12C2B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFFED68C246471BE00E12C2B /* dataGetterExtension */;
+			targetProxy = CFFED698246471BE00E12C2B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CFFED67F246471AB00E12C2B /* Main.storyboard */ = {
@@ -268,6 +379,7 @@
 		CFFED687246471AB00E12C2B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = dataGetter/dataGetter.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -288,6 +400,7 @@
 		CFFED688246471AB00E12C2B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = dataGetter/dataGetter.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -301,6 +414,48 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = OGI.dataGetter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CFFED69C246471BE00E12C2B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = dataGetterExtension/dataGetterExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = G62NMGFRS3;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = dataGetterExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OGI.dataGetter.dataGetterExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CFFED69D246471BE00E12C2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = dataGetterExtension/dataGetterExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = G62NMGFRS3;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = dataGetterExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = OGI.dataGetter.dataGetterExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -322,6 +477,15 @@
 			buildConfigurations = (
 				CFFED687246471AB00E12C2B /* Debug */,
 				CFFED688246471AB00E12C2B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFFED69B246471BE00E12C2B /* Build configuration list for PBXNativeTarget "dataGetterExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFFED69C246471BE00E12C2B /* Debug */,
+				CFFED69D246471BE00E12C2B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
