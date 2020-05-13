@@ -18,7 +18,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         
         
         guard range.end.line - range.start.line == 0 else {
-            completionHandler("The URL can be in only one row" as? Error)
+            insertToBuffer("The URL can be in only one row", to: buffer)
+            completionHandler(nil)
             return
         }
         
@@ -39,7 +40,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         let potentialURL = currLine
         
         guard let url = URL(string: potentialURL) else {
-            //#warning("error")
+            insertToBuffer("invalid URL", to: buffer)
             completionHandler(nil)
             return
         }
@@ -48,17 +49,29 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         
         URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let error = error {
-                //#warning("error")
+                self.insertToBuffer(error.localizedDescription, to: buffer)
                 completionHandler(nil)
-                print(error.localizedDescription)
             }
             if let data = data {
                 if let jsonString = String(data: data, encoding: .utf8) {
+                    
                     let readableJson = self.performJSON(jsonString: jsonString)
-                    self.insertJSON(readableJson, to: buffer, in: range, completionHandler: completionHandler)
-                } else {
+                    self.insertToBuffer(readableJson, to: buffer)
+                    
+                    
+                    let appSettings = AppSettings()
+                    if let property = JSONProperty(from: jsonString, appSettings: appSettings) {
+                        let lineIndent = LineIndent(useTabs: buffer.usesTabsForIndentation, indentationWidth: buffer.indentationWidth, level: 0)
+                        let output = property.generateOutput(lineIndent: lineIndent)
+                        self.insertToBuffer(output, to: buffer)
+                    }
+                    
                     completionHandler(nil)
-                    //#warning("error")
+                    
+                } else {
+                    self.insertToBuffer("Something wrong with JSON", to: buffer)
+                    completionHandler(nil)
+                    
                 }
             }
         }.resume()
@@ -72,12 +85,13 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         var countOfTabs = 0
         
         for char in jsonString {
-            if char == "{" {
-                countOfTabs += 1
+            if char == "}" {
+                readableJSON += "\n// ... \n//}"
+                break
             }
             
-            if char == "}" {
-                countOfTabs -= 1
+            if char == "{" {
+                countOfTabs += 1
             }
             
             readableJSON += String(char)
@@ -94,16 +108,15 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         return readableJSON
     }
     
-    private func insertJSON(_ json: String, to buffer: XCSourceTextBuffer, in range: XCSourceTextRange, completionHandler: @escaping (Error?) -> Void ) {
+    private func insertToBuffer(_ string: String, to buffer: XCSourceTextBuffer) {
         
         let lineCount = buffer.lines.count
-        buffer.lines.insert(json, at: range.start.line + 2)
+        buffer.lines.insert(string, at: buffer.lines.count)
         let insertedLineCount = buffer.lines.count - lineCount
         
-        let selection = XCSourceTextRange(start: XCSourceTextPosition(line: range.start.line + 2, column: 0), end: XCSourceTextPosition(line: range.start.line + insertedLineCount + 2, column: 0))
+        let selection = XCSourceTextRange(start: XCSourceTextPosition(line: buffer.lines.count, column: 0), end: XCSourceTextPosition(line: buffer.lines.count + insertedLineCount, column: 0))
         buffer.selections.removeAllObjects()
         buffer.selections.insert(selection, at: 0)
-        completionHandler(nil)
     }
     
 }
