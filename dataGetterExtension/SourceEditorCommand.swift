@@ -55,16 +55,12 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             if let data = data {
                 if let jsonString = String(data: data, encoding: .utf8) {
                     
-                    let readableJson = self.performJSON(jsonString: jsonString)
+                    let converter = JsonConverter(json: jsonString)
+                    let output = converter.generateOutput(with: "<#Enter your name#>")
+                    self.insertToBuffer(output, to: buffer)
+
+                    let readableJson = ReadableJSON.performJSON(jsonString: jsonString)
                     self.insertToBuffer(readableJson, to: buffer)
-                    
-                    
-                    let appSettings = AppSettings()
-                    if let property = JSONProperty(from: jsonString, appSettings: appSettings) {
-                        let lineIndent = LineIndent(useTabs: buffer.usesTabsForIndentation, indentationWidth: buffer.indentationWidth, level: 0)
-                        let output = property.generateOutput(lineIndent: lineIndent)
-                        self.insertToBuffer(output, to: buffer)
-                    }
                     
                     completionHandler(nil)
                     
@@ -76,36 +72,6 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             }
         }.resume()
         
-    }
-    
-    private func performJSON(jsonString: String) -> String {
-        var readableJSON = "//"
-        
-        let charSet = CharacterSet(charactersIn: "{},[]")
-        var countOfTabs = 0
-        
-        for char in jsonString {
-            if char == "}" {
-                readableJSON += "\n// ... \n//}"
-                break
-            }
-            
-            if char == "{" {
-                countOfTabs += 1
-            }
-            
-            readableJSON += String(char)
-            
-            if (String(char).rangeOfCharacter(from: charSet) != nil) {
-                readableJSON += "\n"
-                readableJSON += "//"
-                for _ in 0...countOfTabs {
-                    readableJSON += "\t"
-                }
-            }
-        }
-
-        return readableJSON
     }
     
     private func insertToBuffer(_ string: String, to buffer: XCSourceTextBuffer) {
