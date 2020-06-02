@@ -12,12 +12,15 @@ class JsonConverter {
     
     var dictinary: [String: Any]?
     
-    init() {
-    }
+    init() {}
     
     init(json: String) {
         if let dictinary = json.jsonObject as? [String: Any] {
             self.dictinary = dictinary
+        } else if let values = json.jsonObject as? [Any] {
+            if let dictinary = values.first as? [String: Any] {
+                self.dictinary = dictinary
+            }
         }
     }
     
