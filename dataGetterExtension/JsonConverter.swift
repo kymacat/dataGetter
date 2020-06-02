@@ -12,6 +12,8 @@ class JsonConverter {
     
     var dictinary: [String: Any]?
     
+    private var codingKeys = Set<String>()
+    
     init() {}
     
     init(json: String) {
@@ -38,16 +40,20 @@ class JsonConverter {
                 
                 if currType != "Any" {
                     result += "\tlet \(key): \(currType)\n"
+                    codingKeys.insert(key)
                 } else if let sublayer = value as? [Any] {
                     if let subDictinary = sublayer.first as? [String: Any] {
                         let newConverter = JsonConverter()
                         newConverter.dictinary = subDictinary
                         sublayers.append(newConverter.generateOutput(with: key))
                         result += "\tlet \(key): [\(key)]\n"
+                        codingKeys.insert(key)
                     }
                 }
                 
             }
+            
+            result += generateCodingKeys()
             
             result += "}\n\n"
             
@@ -57,6 +63,21 @@ class JsonConverter {
             
         }
         
+        
+        return result
+    }
+    
+    
+    private func generateCodingKeys() -> String {
+        var result = ""
+        
+        result += "\n\tenum CodingKeys: String, CodingKey {\n"
+        
+        for key in codingKeys {
+            result += "\t\tcase \(key)\n"
+        }
+        
+        result += "\t}\n"
         
         return result
     }
