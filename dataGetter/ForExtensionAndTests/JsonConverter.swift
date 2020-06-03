@@ -35,7 +35,7 @@ class JsonConverter {
             var sublayers: [String] = []
             
             
-            for (key, value) in dictinary {
+            for (key, value) in dictinary.sorted(by: { $0.0 < $1.0 }) {
                 let currType = identifyType(objc: value)
                 
                 if currType != "Any" {
@@ -43,12 +43,14 @@ class JsonConverter {
                     codingKeys.insert(key)
                 } else if let sublayer = value as? [Any] {
                     if let subDictinary = sublayer.first as? [String: Any] {
-                        let newConverter = JsonConverter()
-                        newConverter.dictinary = subDictinary
-                        sublayers.append(newConverter.generateOutput(with: key))
+                        sublayers.append(generateSublayer(dictinary: subDictinary, with: key))
                         result += "\tlet \(key): [\(key)]\n"
                         codingKeys.insert(key)
                     }
+                } else if let subDictinary = value as? [String: Any] {
+                    sublayers.append(generateSublayer(dictinary: subDictinary, with: "\(key)Sublayer"))
+                    result += "\tlet \(key): \(key)Sublayer\n"
+                    codingKeys.insert(key)
                 }
                 
             }
@@ -67,13 +69,19 @@ class JsonConverter {
         return result
     }
     
+    private func generateSublayer(dictinary: [String: Any], with name: String) -> String {
+        let newConverter = JsonConverter()
+        newConverter.dictinary = dictinary
+        return newConverter.generateOutput(with: name)
+    }
+    
     
     private func generateCodingKeys() -> String {
         var result = ""
         
         result += "\n\tenum CodingKeys: String, CodingKey {\n"
         
-        for key in codingKeys {
+        for key in codingKeys.sorted(by: { $0 < $1 }) {
             result += "\t\tcase \(key)\n"
         }
         

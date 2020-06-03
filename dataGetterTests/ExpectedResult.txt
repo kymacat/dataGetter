@@ -1,0 +1,79 @@
+
+struct test : Codable {
+    let widget: widgetSublayer
+
+    enum CodingKeys: String, CodingKey {
+        case widget
+    }
+}
+
+
+struct widgetSublayer : Codable {
+    let debug: String
+    let image: imageSublayer
+    let text: textSublayer
+    let window: windowSublayer
+
+    enum CodingKeys: String, CodingKey {
+        case debug
+        case image
+        case text
+        case window
+    }
+}
+
+
+struct imageSublayer : Codable {
+    let alignment: String
+    let hOffset: Int
+    let name: String
+    let src: String
+    let vOffset: Int
+
+    enum CodingKeys: String, CodingKey {
+        case alignment
+        case hOffset
+        case name
+        case src
+        case vOffset
+    }
+}
+
+
+struct textSublayer : Codable {
+    let alignment: String
+    let data: String
+    let hOffset: Int
+    let name: String
+    let onMouseUp: String
+    let size: Int
+    let style: String
+    let vOffset: Int
+
+    enum CodingKeys: String, CodingKey {
+        case alignment
+        case data
+        case hOffset
+        case name
+        case onMouseUp
+        case size
+        case style
+        case vOffset
+    }
+}
+
+
+struct windowSublayer : Codable {
+    let height: Int
+    let name: String
+    let title: String
+    let width: Int
+
+    enum CodingKeys: String, CodingKey {
+        case height
+        case name
+        case title
+        case width
+    }
+}
+

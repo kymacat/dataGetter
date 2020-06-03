@@ -13,15 +13,23 @@ class dataGetterTests: XCTestCase {
 
 
     func testConvertFromJsonToStruct() throws {
-        //let converter = JsonConverter()
-        let a = String(decoding: readLocalFile(forName: "JsonForTest")!, as: UTF8.self)
+    
+        let jsonForConvert = String(decoding: readLocalFile(forName: "JsonForTest", with: "json")!, as: UTF8.self)
+        let converter = JsonConverter(json: jsonForConvert)
         
-        XCTAssertEqual(a, "shit\n")
+        let expectedResult = String(decoding: readLocalFile(forName: "ExpectedResult", with: "txt")!, as: UTF8.self)
+        let result = converter.generateOutput(with: "test")
+
+        // In the expected result all the tabs are replaced by spaces, so you need to remove all the tabs and spaces for these two strings
+        let clearExpectedResult = expectedResult.replacingOccurrences(of: " ", with: "")
+        let clearResult = result.replacingOccurrences(of: "\t", with: "").replacingOccurrences(of: " ", with: "")
+        
+        XCTAssertEqual(clearExpectedResult, clearResult)
     }
     
-    private func readLocalFile(forName name: String) -> Data? {
+    private func readLocalFile(forName name: String, with exten: String) -> Data? {
         let testBundle = Bundle(for: type(of: self))
-        guard let ressourceURL = testBundle.url(forResource: name, withExtension: "json") else {
+        guard let ressourceURL = testBundle.url(forResource: name, withExtension: exten) else {
             return nil
         }
         
