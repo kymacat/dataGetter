@@ -12,13 +12,14 @@ import XCTest
 class dataGetterTests: XCTestCase {
 
 
-    func testConvertFromJsonToStruct() throws {
+    func testConvertFromJsonToStruct() {
     
         let jsonForConvert = String(decoding: readLocalFile(forName: "JsonForTest", with: "json")!, as: UTF8.self)
         let converter = JsonConverter(json: jsonForConvert)
+        let result = converter.generateOutput(with: "test")
         
         let expectedResult = String(decoding: readLocalFile(forName: "ExpectedResult", with: "txt")!, as: UTF8.self)
-        let result = converter.generateOutput(with: "test")
+        
 
         // In the expected result all the tabs are replaced by spaces, so you need to remove all the tabs and spaces for these two strings
         let clearExpectedResult = expectedResult.replacingOccurrences(of: " ", with: "")

@@ -8,8 +8,10 @@
 
 import Foundation
 import XcodeKit
+import Cocoa
 
 class SourceEditorCommand: NSObject, XCSourceEditorCommand {
+    
     
     func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void ) -> Void {
         
@@ -56,12 +58,15 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                 if let jsonString = String(data: data, encoding: .utf8) {
                     
                     let converter = JsonConverter(json: jsonString)
-                    let output = converter.generateOutput(with: "<#Enter your name#>")
-                    self.insertToBuffer(output, to: buffer)
+                    let convertedJson = converter.generateOutput(with: "<#Enter your name#>")
+                    
 
                     let readableJson = ReadableJSON.performJSON(jsonString: jsonString)
-                    self.insertToBuffer(readableJson, to: buffer)
                     
+                    self.openGUI(with: convertedJson)
+                    
+                    //self.insertToBuffer(readableJson, to: buffer)
+                    self.insertToBuffer(convertedJson, to: buffer)
                     completionHandler(nil)
                     
                 } else {
@@ -72,6 +77,39 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             }
         }.resume()
         
+    }
+    
+    private var _applicationWillTerminate: (() -> Void)?
+    @objc private func applicationWillTerminate(notification: Notification) {
+        _applicationWillTerminate?()
+        print(notification.object as! String)
+    }
+    
+    private func openGUI(with json: String) {
+        let semaphore = DispatchSemaphore(value: 0)
+
+
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(SourceEditorCommand.applicationWillTerminate(notification:)),
+            name: Notification.Name("dataGetter.applicationWillTerminate"),
+            object: nil,
+            suspensionBehavior: .deliverImmediately
+        )
+        _applicationWillTerminate = {
+            semaphore.signal()
+        }
+
+        // Open App via URL Scheme
+        var c = URLComponents(string: "dataGetter://")!
+        c.queryItems = [
+            URLQueryItem(name: "title", value: json)
+        ]
+        NSWorkspace.shared.open(c.url!)
+        
+        _ = semaphore.wait()
+
+        DistributedNotificationCenter.default().removeObserver(self)
     }
     
     private func insertToBuffer(_ string: String, to buffer: XCSourceTextBuffer) {
