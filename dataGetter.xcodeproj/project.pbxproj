@@ -8,15 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		CF3DCEDF24858FF600984BB5 /* JsonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3DCEDE24858FF600984BB5 /* JsonConverter.swift */; };
+		CF65DA6C248EC41C000F9ECD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF65DA6B248EC41C000F9ECD /* Main.storyboard */; };
 		CF9A3F522486F6E90074EF2C /* ReadableJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3DCEDA248587C300984BB5 /* ReadableJSON.swift */; };
 		CF9A3F5B2486F7880074EF2C /* dataGetterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9A3F5A2486F7880074EF2C /* dataGetterTests.swift */; };
 		CF9A3F622486F87E0074EF2C /* JsonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3DCEDE24858FF600984BB5 /* JsonConverter.swift */; };
 		CF9A3F642486F8FD0074EF2C /* JsonForTest.json in Resources */ = {isa = PBXBuildFile; fileRef = CF9A3F632486F8FD0074EF2C /* JsonForTest.json */; };
+		CFA21CCE248ED85800964542 /* ValuesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA21CCC248ED85800964542 /* ValuesViewController.swift */; };
+		CFA21CCF248ED85800964542 /* ValuesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFA21CCD248ED85800964542 /* ValuesViewController.xib */; };
 		CFD5725C248836820097E8CA /* ExpectedResult.txt in Resources */ = {isa = PBXBuildFile; fileRef = CFD5725B248836820097E8CA /* ExpectedResult.txt */; };
 		CFFED67A246471AA00E12C2B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED679246471AA00E12C2B /* AppDelegate.swift */; };
-		CFFED67C246471AA00E12C2B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED67B246471AA00E12C2B /* ViewController.swift */; };
 		CFFED67E246471AB00E12C2B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFED67D246471AB00E12C2B /* Assets.xcassets */; };
-		CFFED681246471AB00E12C2B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFFED67F246471AB00E12C2B /* Main.storyboard */; };
 		CFFED690246471BE00E12C2B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFFED68F246471BE00E12C2B /* Cocoa.framework */; };
 		CFFED693246471BE00E12C2B /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED692246471BE00E12C2B /* SourceEditorExtension.swift */; };
 		CFFED695246471BE00E12C2B /* SourceEditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFED694246471BE00E12C2B /* SourceEditorCommand.swift */; };
@@ -57,16 +58,17 @@
 /* Begin PBXFileReference section */
 		CF3DCEDA248587C300984BB5 /* ReadableJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadableJSON.swift; sourceTree = "<group>"; };
 		CF3DCEDE24858FF600984BB5 /* JsonConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonConverter.swift; sourceTree = "<group>"; };
+		CF65DA6B248EC41C000F9ECD /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CF9A3F582486F7880074EF2C /* dataGetterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dataGetterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF9A3F5A2486F7880074EF2C /* dataGetterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dataGetterTests.swift; sourceTree = "<group>"; };
 		CF9A3F5C2486F7880074EF2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF9A3F632486F8FD0074EF2C /* JsonForTest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = JsonForTest.json; sourceTree = "<group>"; };
+		CFA21CCC248ED85800964542 /* ValuesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuesViewController.swift; sourceTree = "<group>"; };
+		CFA21CCD248ED85800964542 /* ValuesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ValuesViewController.xib; sourceTree = "<group>"; };
 		CFD5725B248836820097E8CA /* ExpectedResult.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ExpectedResult.txt; sourceTree = "<group>"; };
 		CFFED676246471AA00E12C2B /* dataGetter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dataGetter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFED679246471AA00E12C2B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CFFED67B246471AA00E12C2B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CFFED67D246471AB00E12C2B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CFFED680246471AB00E12C2B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CFFED682246471AB00E12C2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFFED683246471AB00E12C2B /* dataGetter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dataGetter.entitlements; sourceTree = "<group>"; };
 		CFFED68D246471BE00E12C2B /* dataGetterExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = dataGetterExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,10 +149,11 @@
 			isa = PBXGroup;
 			children = (
 				CFFED679246471AA00E12C2B /* AppDelegate.swift */,
-				CFFED67B246471AA00E12C2B /* ViewController.swift */,
+				CFA21CCC248ED85800964542 /* ValuesViewController.swift */,
+				CFA21CCD248ED85800964542 /* ValuesViewController.xib */,
 				CF9A3F532486F73B0074EF2C /* ForExtensionAndTests */,
 				CFFED67D246471AB00E12C2B /* Assets.xcassets */,
-				CFFED67F246471AB00E12C2B /* Main.storyboard */,
+				CF65DA6B248EC41C000F9ECD /* Main.storyboard */,
 				CFFED682246471AB00E12C2B /* Info.plist */,
 				CFFED683246471AB00E12C2B /* dataGetter.entitlements */,
 			);
@@ -290,8 +293,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFA21CCF248ED85800964542 /* ValuesViewController.xib in Resources */,
+				CF65DA6C248EC41C000F9ECD /* Main.storyboard in Resources */,
 				CFFED67E246471AB00E12C2B /* Assets.xcassets in Resources */,
-				CFFED681246471AB00E12C2B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,8 +321,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFA21CCE248ED85800964542 /* ValuesViewController.swift in Sources */,
 				CF9A3F622486F87E0074EF2C /* JsonConverter.swift in Sources */,
-				CFFED67C246471AA00E12C2B /* ViewController.swift in Sources */,
 				CFFED67A246471AA00E12C2B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,17 +352,6 @@
 			targetProxy = CFFED698246471BE00E12C2B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		CFFED67F246471AB00E12C2B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CFFED680246471AB00E12C2B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CF9A3F602486F7880074EF2C /* Debug */ = {

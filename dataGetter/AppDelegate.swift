@@ -20,14 +20,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
     }
 
-    private var selected: String?
+    private var content: String?
 
     @objc func handleGetURLEvent(event: NSAppleEventDescriptor?, replyEvent: NSAppleEventDescriptor?) {
-        defer {
-            DispatchQueue.main.async {
-                NSApplication.shared.terminate(nil)
-            }
-        }
+        
         guard
             let urlString = event?.paramDescriptor(forKeyword: keyDirectObject)?.stringValue,
             let components = URLComponents(string: urlString),
@@ -36,8 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return
         }
 
-        sleep(3)
-        selected = title
+        content = title
 
         
     }
@@ -45,11 +40,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
         DistributedNotificationCenter.default().postNotificationName(
             Notification.Name("dataGetter.applicationWillTerminate"),
-            object: selected,
+            object: content,
             userInfo: nil,
             deliverImmediately: true
         )
     }
+    
+    private var window: NSWindow?
+    
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        window = NSApplication.shared.orderedWindows.first
+        window?.title = "Data getter"
+        
+        if let content = content {
+            let controller = ValuesViewController(content: content)
+            window?.contentViewController = controller
+        } else {
+            NSApplication.shared.terminate(nil)
+        }
+    
+        
+    }
 
 }
-
