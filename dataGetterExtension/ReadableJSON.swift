@@ -11,33 +11,45 @@ import Foundation
 class ReadableJSON {
     
     static func performJSON(jsonString: String) -> String {
-        var readableJSON = "//"
+        var readableJSON = ""
+        var isString = false
         
-        let charSet = CharacterSet(charactersIn: "{},[]")
         var countOfTabs = 0
         
         for char in jsonString {
-            if char == "}" {
-                readableJSON += "\n// ... \n//}"
-                break
-            }
             
-            if char == "{" {
+            switch char {
+            case "{", "[":
                 countOfTabs += 1
+            case "}", "]":
+                countOfTabs -= 1
+                readableJSON += "\n"
+                addTabs(string: &readableJSON, countOfTabs: countOfTabs)
+            case "\"":
+                isString = !isString
+            default:
+                print()
             }
             
             readableJSON += String(char)
             
-            if (String(char).rangeOfCharacter(from: charSet) != nil) {
+            if char == "{" || char == "[" || (char == "," && !isString)  {
                 readableJSON += "\n"
-                readableJSON += "//"
-                for _ in 0...countOfTabs {
-                    readableJSON += "\t"
-                }
+                addTabs(string: &readableJSON, countOfTabs: countOfTabs)
+            }
+            
+            if char == ":" && !isString {
+                readableJSON += " "
             }
         }
 
         return readableJSON
+    }
+    
+    private static func addTabs(string: inout String, countOfTabs: Int) {
+        for _ in 0..<countOfTabs {
+            string += "\t"
+        }
     }
     
 }

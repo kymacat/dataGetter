@@ -63,9 +63,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 
                     let readableJson = ReadableJSON.performJSON(jsonString: jsonString)
                     
-                    self.openGUI(with: convertedJson)
+                    self.openGUI(with: readableJson)
                     
-                    //self.insertToBuffer(readableJson, to: buffer)
                     self.insertToBuffer(convertedJson, to: buffer)
                     completionHandler(nil)
                     
