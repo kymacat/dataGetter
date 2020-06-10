@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard
             let urlString = event?.paramDescriptor(forKeyword: keyDirectObject)?.stringValue,
             let components = URLComponents(string: urlString),
-            let title = components.queryItems?.first(where: { $0.name == "title" })?.value
+            let title = components.queryItems?.first(where: { $0.name == "json" })?.value
             else {
                 return
         }

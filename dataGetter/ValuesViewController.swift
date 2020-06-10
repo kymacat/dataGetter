@@ -15,6 +15,8 @@ class ValuesViewController: NSViewController {
     
     @IBOutlet var contentTextView: NSTextView!
     
+    // MARK: - LifeCycle
+    
     init(content: String) {
         self.content = content
         super.init(nibName: nil, bundle: nil)
@@ -28,9 +30,15 @@ class ValuesViewController: NSViewController {
         super.viewDidLoad()
         if let content = content {
             contentTextView.string = content
-            setColors(in: content)
+            contentTextView.font = NSFont(name: "Microsoft Sans Serif", size: 14)
+            DispatchQueue.global(qos: .userInteractive).async {
+                self.setColors(in: content)
+            }
+            
         }
     }
+    
+    // MARK: - Buttons
     
     @IBAction func ConfirmButton(_ sender: Any) {
         NSApplication.shared.terminate(nil)
@@ -38,10 +46,13 @@ class ValuesViewController: NSViewController {
     @IBAction func CancelButton(_ sender: Any) {
     }
     
+    // MARK: - Work with UI
+    
     private func setColors(in string: String) {
         let colorOfKey = NSColor(calibratedRed: 60/255, green: 150/255, blue: 230/255, alpha: 1)
         let colorOfString = NSColor(calibratedRed: 150/255, green: 67/255, blue: 60/255, alpha: 1)
         let colorOfNumbers = NSColor(calibratedRed: 78/255, green: 163/255, blue: 130/255, alpha: 1)
+        let nullColor = NSColor(calibratedRed: 255/255, green: 46/255, blue: 125/255, alpha: 1)
         
         var isString = false
         var start = 0
@@ -53,9 +64,9 @@ class ValuesViewController: NSViewController {
                 if isString {
                     isString = false
                     if string[index+1] == ":" {
-                        contentTextView.setTextColor(colorOfKey, range: NSMakeRange(start, index-start+1))
+                        changeColor(color: colorOfKey, start: start, length: index-start+1)
                     } else {
-                        contentTextView.setTextColor(colorOfString, range: NSMakeRange(start, index-start+1))
+                        changeColor(color: colorOfString, start: start, length: index-start+1)
                     }
                     
                 }
@@ -68,22 +79,33 @@ class ValuesViewController: NSViewController {
             
             if char.isNumber && !isString {
                 
-                if string[index-1] == " " {
+                if string[index-1] == " " || string[index-1] == "-" {
                     start = index
+                    if string[index+1] == "," { changeColor(color: colorOfNumbers, start: start, length: 1) }
                 } else if string[index+1] == "," {
-                    contentTextView.setTextColor(colorOfNumbers, range: NSMakeRange(start, index-start+1))
+                    changeColor(color: colorOfNumbers, start: start-1, length: index-start+2)
                 }
                 
+            }
+            
+            if char.isLetter && !isString {
+                changeColor(color: nullColor, start: index, length: 1)
             }
             
         }
         
     }
     
+    private func changeColor(color: NSColor, start: Int, length: Int) {
+        DispatchQueue.main.async {
+            self.contentTextView.setTextColor(color, range: NSMakeRange(start, length))
+        }
+    }
     
     
 }
 
+// MARK: - String subscript
 
 extension StringProtocol {
     subscript(offset: Int) -> Character { self[index(startIndex, offsetBy: offset)] }

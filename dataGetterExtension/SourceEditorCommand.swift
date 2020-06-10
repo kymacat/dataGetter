@@ -102,7 +102,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         // Open App via URL Scheme
         var c = URLComponents(string: "dataGetter://")!
         c.queryItems = [
-            URLQueryItem(name: "title", value: json)
+            URLQueryItem(name: "json", value: json)
         ]
         NSWorkspace.shared.open(c.url!)
         
