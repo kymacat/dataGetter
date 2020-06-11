@@ -16,7 +16,7 @@ class dataGetterTests: XCTestCase {
     
         let jsonForConvert = String(decoding: readLocalFile(forName: "JsonForTest", with: "json")!, as: UTF8.self)
         let converter = JsonConverter(json: jsonForConvert)
-        let result = converter.generateOutput(with: "test")
+        let result = converter.generateOutput()
         
         let expectedResult = String(decoding: readLocalFile(forName: "ExpectedResult", with: "txt")!, as: UTF8.self)
         

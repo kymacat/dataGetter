@@ -58,7 +58,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
                 if let jsonString = String(data: data, encoding: .utf8) {
                     
                     let converter = JsonConverter(json: jsonString)
-                    let convertedJson = converter.generateOutput(with: "<#Enter your name#>")
+                    let convertedJson = converter.generateOutput()
                     
 
                     let readableJson = ReadableJSON.performJSON(jsonString: jsonString)
@@ -99,7 +99,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
             semaphore.signal()
         }
 
-        // Open App via URL Scheme
+        // Open App by URL Scheme
         var c = URLComponents(string: "dataGetter://")!
         c.queryItems = [
             URLQueryItem(name: "json", value: json)

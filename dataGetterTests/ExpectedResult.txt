@@ -1,6 +1,6 @@
 
-struct test : Codable {
-    let widget: widgetSublayer
+struct <#Enter your name#> : Codable {
+    let widget: Widget
 
     enum CodingKeys: String, CodingKey {
         case widget
@@ -8,11 +8,11 @@ struct test : Codable {
 }
 
 
-struct widgetSublayer : Codable {
+struct Widget : Codable {
     let debug: String
-    let image: imageSublayer
-    let text: textSublayer
-    let window: windowSublayer
+    let image: Image
+    let text: Text
+    let window: Window
 
     enum CodingKeys: String, CodingKey {
         case debug
@@ -23,7 +23,7 @@ struct widgetSublayer : Codable {
 }
 
 
-struct imageSublayer : Codable {
+struct Image : Codable {
     let alignment: String
     let hOffset: Int
     let name: String
@@ -40,7 +40,7 @@ struct imageSublayer : Codable {
 }
 
 
-struct textSublayer : Codable {
+struct Text : Codable {
     let alignment: String
     let data: String
     let hOffset: Int
@@ -63,7 +63,7 @@ struct textSublayer : Codable {
 }
 
 
-struct windowSublayer : Codable {
+struct Window : Codable {
     let height: Int
     let name: String
     let title: String

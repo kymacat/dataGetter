@@ -10,11 +10,18 @@ import Foundation
 
 class JsonConverter {
     
+    static var codingKeysTree = CodingKeysTree()
+    var codingKeysParent: CodKey?
+    
+    var nameOfLayer: String
+    
     var dictinary: [String: Any]?
     
     private var codingKeys = Set<String>()
     
-    init() {}
+    init(with nameOfLayer: String) {
+        self.nameOfLayer = nameOfLayer
+    }
     
     init(json: String) {
         if let dictinary = json.jsonObject as? [String: Any] {
@@ -24,14 +31,15 @@ class JsonConverter {
                 self.dictinary = dictinary
             }
         }
+        nameOfLayer = "<#Enter your name#>"
     }
     
-    func generateOutput(with name: String) -> String {
+    func generateOutput() -> String {
         var result = ""
         
         if let dictinary = dictinary {
             
-            result += "\nstruct \(name) : Codable {\n"
+            result += "\nstruct \(nameOfLayer) : Codable {\n"
             var sublayers: [String] = []
             
             
@@ -41,19 +49,24 @@ class JsonConverter {
                 if currType != "Any" {
                     result += "\tlet \(key): \(currType)\n"
                     codingKeys.insert(key)
+                    addToTree(name: key)
                 } else if let sublayer = value as? [Any] {
                     if let subDictinary = sublayer.first as? [String: Any] {
-                        sublayers.append(generateSublayer(dictinary: subDictinary, with: key))
-                        result += "\tlet \(key): [\(key)]\n"
+                        var name = key.capitalizingFirstLetter()
+                        if name.last == "s" { name.removeLast() }
+                        sublayers.append(generateSublayer(dictinary: subDictinary, with: name))
+                        result += "\tlet \(key): [\(name)]\n"
                         codingKeys.insert(key)
                     }
                 } else if let subDictinary = value as? [String: Any] {
-                    sublayers.append(generateSublayer(dictinary: subDictinary, with: "\(key)Sublayer"))
-                    result += "\tlet \(key): \(key)Sublayer\n"
+                    let name = key.capitalizingFirstLetter()
+                    sublayers.append(generateSublayer(dictinary: subDictinary, with: name))
+                    result += "\tlet \(key): \(name)\n"
                     codingKeys.insert(key)
                 }
                 
             }
+            
             
             result += generateCodingKeys()
             
@@ -69,10 +82,34 @@ class JsonConverter {
         return result
     }
     
+    private func addToTree(name: String) {
+        let cKey = CodKey(with: name)
+        if let parent = codingKeysParent {
+            parent.childrens.append(cKey)
+        } else {
+            JsonConverter.codingKeysTree.roots.append(cKey)
+        }
+    }
+    
+    private func addToTree(key: CodKey) {
+        if let parent = codingKeysParent {
+            parent.childrens.append(key)
+        } else {
+            JsonConverter.codingKeysTree.roots.append(key)
+        }
+    }
+    
     private func generateSublayer(dictinary: [String: Any], with name: String) -> String {
-        let newConverter = JsonConverter()
+        let newConverter = JsonConverter(with: name)
         newConverter.dictinary = dictinary
-        return newConverter.generateOutput(with: name)
+        
+        let parent = CodKey(with: name)
+        parent.parent = codingKeysParent
+        addToTree(key: parent)
+        
+        newConverter.codingKeysParent = parent
+        
+        return newConverter.generateOutput()
     }
     
     
@@ -129,6 +166,14 @@ extension String {
     internal var jsonObject: Any? {
         let jsonData = self.data(using: .utf8)!
         return try? JSONSerialization.jsonObject(with: jsonData, options: [])
+    }
+    
+    func capitalizingFirstLetter() -> String {
+      return prefix(1).uppercased() + self.lowercased().dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+      self = self.capitalizingFirstLetter()
     }
 
 }
