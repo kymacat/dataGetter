@@ -12,38 +12,35 @@ import Cocoa
 
 class SourceEditorCommand: NSObject, XCSourceEditorCommand {
     
+    private var buffer: XCSourceTextBuffer!
+    private var completionHandler: ((Error?) -> Void )!
     
     func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void ) -> Void {
         
-        let buffer = invocation.buffer
+        self.buffer = invocation.buffer
+        self.completionHandler = completionHandler
         let range = buffer.selections.firstObject as! XCSourceTextRange
         
-        
         guard range.end.line - range.start.line == 0 else {
-            insertToBuffer("The URL can be in only one row", to: buffer)
-            completionHandler(nil)
+            insertToBuffer("The URL can be in only one row")
             return
         }
         
-        
-        dataRequestFromLine(buffer: buffer, range: range, completionHandler: completionHandler)
+        let line = buffer.lines[range.start.line] as! String
+        let currLine = String(line[range.start.column..<range.end.column])
+        dataRequestFromLine(line: currLine)
         
     }
     
-    private func dataRequestFromLine(buffer: XCSourceTextBuffer, range: XCSourceTextRange,  completionHandler: @escaping (Error?) -> Void) {
+    private func dataRequestFromLine(line: String) {
         
-        let line = buffer.lines[range.start.line] as! String
-        
-        var currLine = String(line[range.start.column..<range.end.column])
-        
-        currLine = currLine.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
+        let currLine = line.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range: nil)
         .replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range: nil)
         
         let potentialURL = currLine
         
         guard let url = URL(string: potentialURL) else {
-            insertToBuffer("invalid URL", to: buffer)
-            completionHandler(nil)
+            insertToBuffer("invalid URL")
             return
         }
         
@@ -51,27 +48,13 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         
         URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let error = error {
-                self.insertToBuffer(error.localizedDescription, to: buffer)
-                completionHandler(nil)
+                self.insertToBuffer(error.localizedDescription)
             }
             if let data = data {
                 if let jsonString = String(data: data, encoding: .utf8) {
-                    
-                    let converter = JsonConverter(json: jsonString)
-                    let convertedJson = converter.generateOutput()
-                    
-
-                    let readableJson = ReadableJSON.performJSON(jsonString: jsonString)
-                    
-                    self.openGUI(with: readableJson)
-                    
-                    self.insertToBuffer(convertedJson, to: buffer)
-                    completionHandler(nil)
-                    
+                    self.openGUI(with: jsonString)
                 } else {
-                    self.insertToBuffer("Something wrong with JSON", to: buffer)
-                    completionHandler(nil)
-                    
+                    self.insertToBuffer("Something wrong with JSON")
                 }
             }
         }.resume()
@@ -81,7 +64,9 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
     private var _applicationWillTerminate: (() -> Void)?
     @objc private func applicationWillTerminate(notification: Notification) {
         _applicationWillTerminate?()
-        print(notification.object as! String)
+        if let output = notification.object as? String {
+            insertToBuffer(output)
+        }
     }
     
     private func openGUI(with json: String) {
@@ -97,6 +82,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         )
         _applicationWillTerminate = {
             semaphore.signal()
+            DistributedNotificationCenter.default().removeObserver(self)
         }
 
         // Open App by URL Scheme
@@ -108,10 +94,9 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         
         _ = semaphore.wait()
 
-        DistributedNotificationCenter.default().removeObserver(self)
     }
     
-    private func insertToBuffer(_ string: String, to buffer: XCSourceTextBuffer) {
+    private func insertToBuffer(_ string: String) {
         
         let lineCount = buffer.lines.count
         buffer.lines.insert(string, at: buffer.lines.count)
@@ -120,6 +105,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         let selection = XCSourceTextRange(start: XCSourceTextPosition(line: buffer.lines.count, column: 0), end: XCSourceTextPosition(line: buffer.lines.count + insertedLineCount, column: 0))
         buffer.selections.removeAllObjects()
         buffer.selections.insert(selection, at: 0)
+        self.completionHandler(nil)
     }
     
 }

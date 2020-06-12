@@ -10,15 +10,24 @@ import Cocoa
 
 class ValuesViewController: NSViewController {
     
-    var content: String?
+    private var readableJson: String!
+    private var convertedJson: String!
+    private var codingTree: CodingKeysTree!
     
     
-    @IBOutlet var contentTextView: NSTextView!
+    @IBOutlet var jsonTextView: NSTextView!
+    @IBOutlet weak var outlineView: NSOutlineView!
     
     // MARK: - LifeCycle
     
-    init(content: String) {
-        self.content = content
+    init(json: String) {
+        if let convertedJson = JsonConverter(json: json) {
+            self.convertedJson = convertedJson.generateOutput()
+        } else {
+            NSApplication.shared.terminate(nil)
+        }
+        self.readableJson = ReadableJSON.performJSON(jsonString: json)
+        self.codingTree = JsonConverter.codingKeysTree
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -28,14 +37,17 @@ class ValuesViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let content = content {
-            contentTextView.string = content
-            contentTextView.font = NSFont(name: "Microsoft Sans Serif", size: 14)
+        if let content = readableJson {
+            jsonTextView.string = content
+            jsonTextView.font = NSFont(name: "Microsoft Sans Serif", size: 14)
             DispatchQueue.global(qos: .userInteractive).async {
                 self.setColors(in: content)
             }
-            
         }
+        
+        outlineView.delegate = self
+        outlineView.dataSource = self
+        
     }
     
     // MARK: - Buttons
@@ -44,6 +56,7 @@ class ValuesViewController: NSViewController {
         NSApplication.shared.terminate(nil)
     }
     @IBAction func CancelButton(_ sender: Any) {
+        NSApplication.shared.terminate(nil)
     }
     
     // MARK: - Work with UI
@@ -81,8 +94,8 @@ class ValuesViewController: NSViewController {
                 
                 if string[index-1] == " " || string[index-1] == "-" {
                     start = index
-                    if string[index+1] == "," { changeColor(color: colorOfNumbers, start: start, length: 1) }
-                } else if string[index+1] == "," {
+                    if string[index+1] == "," || string[index+1] == "\n"  { changeColor(color: colorOfNumbers, start: start, length: 1) }
+                } else if string[index+1] == "," || string[index+1] == "\n" {
                     changeColor(color: colorOfNumbers, start: start-1, length: index-start+2)
                 }
                 
@@ -98,12 +111,55 @@ class ValuesViewController: NSViewController {
     
     private func changeColor(color: NSColor, start: Int, length: Int) {
         DispatchQueue.main.async {
-            self.contentTextView.setTextColor(color, range: NSMakeRange(start, length))
+            self.jsonTextView.setTextColor(color, range: NSMakeRange(start, length))
         }
     }
     
-    
 }
+
+// MARK: - OutlineView Data Source
+
+extension ValuesViewController: NSOutlineViewDataSource {
+    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+        if let item = item as? CodKey {
+            return item.childrens.count
+        }
+        return codingTree.roots.count
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+        if let item = item as? CodKey {
+            return item.childrens[index]
+        }
+        return codingTree.roots[index]
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+        if let item = item as? CodKey {
+            if item.childrens.count != 0 {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+// MARK: - OutlineView Delegate
+
+extension ValuesViewController: NSOutlineViewDelegate {
+    func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+        guard let item = item as? CodKey else {
+            return NSView()
+        }
+        
+        let frameRect = NSRect(x: 0, y: 0, width: tableColumn!.width, height: 20)
+        let view = ValueCell(frame: frameRect, key: item)
+         
+        return view
+    }
+}
+
+
 
 // MARK: - String subscript
 

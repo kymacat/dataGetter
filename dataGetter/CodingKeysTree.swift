@@ -18,6 +18,7 @@ class CodKey {
     var childrens: [CodKey] = []
     
     let name: String
+    var state = true
     
     init(with name: String) {
         self.name = name

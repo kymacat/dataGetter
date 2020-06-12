@@ -19,17 +19,19 @@ class JsonConverter {
     
     private var codingKeys = Set<String>()
     
-    init(with nameOfLayer: String) {
+    init(nameOfLayer: String) {
         self.nameOfLayer = nameOfLayer
     }
     
-    init(json: String) {
+    init?(json: String) {
         if let dictinary = json.jsonObject as? [String: Any] {
             self.dictinary = dictinary
         } else if let values = json.jsonObject as? [Any] {
             if let dictinary = values.first as? [String: Any] {
                 self.dictinary = dictinary
             }
+        } else {
+            return nil
         }
         nameOfLayer = "<#Enter your name#>"
     }
@@ -100,7 +102,7 @@ class JsonConverter {
     }
     
     private func generateSublayer(dictinary: [String: Any], with name: String) -> String {
-        let newConverter = JsonConverter(with: name)
+        let newConverter = JsonConverter(nameOfLayer: name)
         newConverter.dictinary = dictinary
         
         let parent = CodKey(with: name)

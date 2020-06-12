@@ -20,19 +20,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
     }
 
-    private var content: String?
+    private var json: String?
 
     @objc func handleGetURLEvent(event: NSAppleEventDescriptor?, replyEvent: NSAppleEventDescriptor?) {
         
         guard
             let urlString = event?.paramDescriptor(forKeyword: keyDirectObject)?.stringValue,
             let components = URLComponents(string: urlString),
-            let title = components.queryItems?.first(where: { $0.name == "json" })?.value
+            let json = components.queryItems?.first(where: { $0.name == "json" })?.value
             else {
                 return
         }
 
-        content = title
+        self.json = json
 
         
     }
@@ -40,7 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
         DistributedNotificationCenter.default().postNotificationName(
             Notification.Name("dataGetter.applicationWillTerminate"),
-            object: content,
+            object: "error",
             userInfo: nil,
             deliverImmediately: true
         )
@@ -52,8 +52,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window = NSApplication.shared.orderedWindows.first
         window?.title = "Data getter"
         
-        if let content = content {
-            let controller = ValuesViewController(content: content)
+        if let json = json {
+            let controller = ValuesViewController(json: json)
             window?.contentViewController = controller
         } else {
             NSApplication.shared.terminate(nil)
