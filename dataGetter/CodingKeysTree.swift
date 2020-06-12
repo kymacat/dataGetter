@@ -11,6 +11,23 @@ import Foundation
 
 class CodingKeysTree {
     var roots: [CodKey] = []
+    
+    func getFilter() -> Set<String> {
+        var result = Set<String>()
+        findKeys(keys: roots, for: &result)
+        return result
+    }
+    
+    private func findKeys(keys: [CodKey], for set: inout Set<String>) {
+        for key in keys {
+            if !key.state {
+                set.insert(key.name)
+            }
+            if key.childrens.count != 0 {
+                findKeys(keys: key.childrens, for: &set)
+            }
+        }
+    }
 }
 
 class CodKey {

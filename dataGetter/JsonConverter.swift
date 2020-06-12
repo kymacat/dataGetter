@@ -17,6 +17,8 @@ class JsonConverter {
     
     var dictinary: [String: Any]?
     
+    var filterMode = false
+    
     private var codingKeys = Set<String>()
     
     init(nameOfLayer: String) {
@@ -38,6 +40,11 @@ class JsonConverter {
     
     func generateOutput() -> String {
         var result = ""
+        var filter = Set<String>()
+        
+        if filterMode {
+            filter = JsonConverter.codingKeysTree.getFilter()
+        }
         
         if let dictinary = dictinary {
             
@@ -46,6 +53,8 @@ class JsonConverter {
             
             
             for (key, value) in dictinary.sorted(by: { $0.0 < $1.0 }) {
+                if filterMode && filter.contains(key) { continue }
+                
                 let currType = identifyType(objc: value)
                 
                 if currType != "Any" {
@@ -71,6 +80,7 @@ class JsonConverter {
             
             
             result += generateCodingKeys()
+            codingKeys.removeAll()
             
             result += "}\n\n"
             
@@ -104,6 +114,7 @@ class JsonConverter {
     private func generateSublayer(dictinary: [String: Any], with name: String) -> String {
         let newConverter = JsonConverter(nameOfLayer: name)
         newConverter.dictinary = dictinary
+        newConverter.filterMode = filterMode
         
         let parent = CodKey(with: name)
         parent.parent = codingKeysParent

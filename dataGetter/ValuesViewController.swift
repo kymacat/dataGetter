@@ -11,7 +11,7 @@ import Cocoa
 class ValuesViewController: NSViewController {
     
     private var readableJson: String!
-    private var convertedJson: String!
+    private var convertedJson: JsonConverter!
     private var codingTree: CodingKeysTree!
     
     
@@ -22,7 +22,8 @@ class ValuesViewController: NSViewController {
     
     init(json: String) {
         if let convertedJson = JsonConverter(json: json) {
-            self.convertedJson = convertedJson.generateOutput()
+            self.convertedJson = convertedJson
+            _ = convertedJson.generateOutput()
         } else {
             NSApplication.shared.terminate(nil)
         }
@@ -53,6 +54,13 @@ class ValuesViewController: NSViewController {
     // MARK: - Buttons
     
     @IBAction func ConfirmButton(_ sender: Any) {
+        convertedJson.filterMode = true
+        DistributedNotificationCenter.default().postNotificationName(
+            Notification.Name("dataGetter.applicationWillTerminate"),
+            object: convertedJson.generateOutput(),
+            userInfo: nil,
+            deliverImmediately: true
+        )
         NSApplication.shared.terminate(nil)
     }
     @IBAction func CancelButton(_ sender: Any) {
@@ -154,8 +162,12 @@ extension ValuesViewController: NSOutlineViewDelegate {
         
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn!.width, height: 20)
         let view = ValueCell(frame: frameRect, key: item)
-         
+        
         return view
+    }
+    
+    func selectionShouldChange(in outlineView: NSOutlineView) -> Bool {
+        return false
     }
 }
 

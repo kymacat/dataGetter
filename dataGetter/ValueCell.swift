@@ -19,6 +19,11 @@ class ValueCell: NSTableCellView {
         self.init(frame: frame)
         codKey = key
         valueNameTextView?.string = key.name
+        if key.state {
+            checkButton?.state = .on
+        } else {
+            checkButton?.state = .off
+        }
     }
     
     override init(frame frameRect: NSRect) {
@@ -31,13 +36,17 @@ class ValueCell: NSTableCellView {
         
         checkButton = NSButton(frame: NSRect(x: 0, y: 0, width: 20, height: frameRect.height))
         checkButton?.setButtonType(.switch)
-        checkButton?.state = .on
+        checkButton?.target = self
+        checkButton?.action = #selector(changeState(_:))
         self.addSubview(checkButton!)
-        
      }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    @objc func changeState(_ sender: NSButton) {
+        codKey?.state.toggle()
     }
     
 }
