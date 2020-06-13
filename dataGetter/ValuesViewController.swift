@@ -54,9 +54,13 @@ class ValuesViewController: NSViewController {
     
     @IBAction func ConfirmButton(_ sender: Any) {
         convertedJson.filterMode = true
+        var output = convertedJson.generateOutput()
+        if output == "" {
+            output = "cancel"
+        }
         DistributedNotificationCenter.default().postNotificationName(
             Notification.Name("dataGetter.applicationWillTerminate"),
-            object: convertedJson.generateOutput(),
+            object: output,
             userInfo: nil,
             deliverImmediately: true
         )
