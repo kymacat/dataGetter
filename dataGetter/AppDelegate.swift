@@ -40,7 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
         DistributedNotificationCenter.default().postNotificationName(
             Notification.Name("dataGetter.applicationWillTerminate"),
-            object: "error",
+            object: "cancel",
             userInfo: nil,
             deliverImmediately: true
         )

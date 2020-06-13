@@ -10,6 +10,11 @@ import Foundation
 import XcodeKit
 import Cocoa
 
+enum extensionErrors: Error {
+    case urlError
+    case jsonError
+}
+
 class SourceEditorCommand: NSObject, XCSourceEditorCommand {
     
     private var buffer: XCSourceTextBuffer!
@@ -22,7 +27,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         let range = buffer.selections.firstObject as! XCSourceTextRange
         
         guard range.end.line - range.start.line == 0 else {
-            insertToBuffer("The URL can be in only one row")
+            completionHandler(extensionErrors.urlError)
             return
         }
         
@@ -40,7 +45,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         let potentialURL = currLine
         
         guard let url = URL(string: potentialURL) else {
-            insertToBuffer("invalid URL")
+            completionHandler(extensionErrors.urlError)
             return
         }
         
@@ -48,13 +53,13 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
         
         URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let error = error {
-                self.insertToBuffer(error.localizedDescription)
+                self.completionHandler(error)
             }
             if let data = data {
                 if let jsonString = String(data: data, encoding: .utf8) {
                     self.openGUI(with: jsonString)
                 } else {
-                    self.insertToBuffer("Something wrong with JSON")
+                    self.completionHandler(extensionErrors.jsonError)
                 }
             }
         }.resume()
@@ -65,6 +70,9 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
     @objc private func applicationWillTerminate(notification: Notification) {
         _applicationWillTerminate?()
         if let output = notification.object as? String {
+            if output == "cancel" {
+                completionHandler(nil)
+            }
             insertToBuffer(output)
         }
     }
