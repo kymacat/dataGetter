@@ -48,7 +48,6 @@ class ValuesViewController: NSViewController {
         
         outlineView.delegate = self
         outlineView.dataSource = self
-        
     }
     
     // MARK: - Buttons
@@ -161,7 +160,7 @@ extension ValuesViewController: NSOutlineViewDelegate {
         }
         
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn!.width, height: 20)
-        let view = ValueCell(frame: frameRect, key: item)
+        let view = ValueCell(frame: frameRect, key: item, parent: outlineView)
         
         return view
     }

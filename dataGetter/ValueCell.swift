@@ -10,13 +10,15 @@ import Cocoa
 
 class ValueCell: NSTableCellView {
     
-    var codKey: CodKey?
+    private var codKey: CodKey?
+    private var parentOutlineView: NSOutlineView?
     
     var valueNameTextView: NSTextView?
     var checkButton: NSButton?
     
-    convenience init(frame: NSRect, key: CodKey) {
+    convenience init(frame: NSRect, key: CodKey, parent: NSOutlineView) {
         self.init(frame: frame)
+        parentOutlineView = parent
         codKey = key
         valueNameTextView?.string = key.name
         if key.state {
@@ -46,7 +48,27 @@ class ValueCell: NSTableCellView {
     }
     
     @objc func changeState(_ sender: NSButton) {
-        codKey?.state.toggle()
+        guard let codKey = codKey else {
+            return
+        }
+        
+        var isSomethingChange = false
+        codKey.state.toggle()
+        
+        if codKey.childrens.count != 0 {
+            codKey.setStateToAll(state: codKey.state)
+            isSomethingChange = true
+        }
+        
+        if let parent = codKey.parent {
+            parent.checkChildrens()
+            isSomethingChange = true
+        }
+        
+        if isSomethingChange {
+            parentOutlineView?.reloadData()
+        }
+        
     }
     
 }

@@ -65,19 +65,22 @@ class JsonConverter {
                     if let subDictinary = sublayer.first as? [String: Any] {
                         var name = key.capitalizingFirstLetter()
                         if name.last == "s" { name.removeLast() }
-                        sublayers.append(generateSublayer(dictinary: subDictinary, with: name))
+                        sublayers.append(generateSublayer(dictinary: subDictinary, with: name, keyForTree: key))
                         result += "\tlet \(key): [\(name)]\n"
                         codingKeys.insert(key)
                     }
                 } else if let subDictinary = value as? [String: Any] {
                     let name = key.capitalizingFirstLetter()
-                    sublayers.append(generateSublayer(dictinary: subDictinary, with: name))
+                    sublayers.append(generateSublayer(dictinary: subDictinary, with: name, keyForTree: key))
                     result += "\tlet \(key): \(name)\n"
                     codingKeys.insert(key)
                 }
                 
             }
             
+            guard codingKeys.count != 0 else {
+                return ""
+            }
             
             result += generateCodingKeys()
             codingKeys.removeAll()
@@ -97,6 +100,7 @@ class JsonConverter {
     private func addToTree(name: String) {
         let cKey = CodKey(with: name)
         if let parent = codingKeysParent {
+            cKey.parent = parent
             parent.childrens.append(cKey)
         } else {
             JsonConverter.codingKeysTree.roots.append(cKey)
@@ -111,12 +115,12 @@ class JsonConverter {
         }
     }
     
-    private func generateSublayer(dictinary: [String: Any], with name: String) -> String {
+    private func generateSublayer(dictinary: [String: Any], with name: String, keyForTree: String) -> String {
         let newConverter = JsonConverter(nameOfLayer: name)
         newConverter.dictinary = dictinary
         newConverter.filterMode = filterMode
         
-        let parent = CodKey(with: name)
+        let parent = CodKey(with: keyForTree)
         parent.parent = codingKeysParent
         addToTree(key: parent)
         

@@ -40,4 +40,24 @@ class CodKey {
     init(with name: String) {
         self.name = name
     }
+    
+    func setStateToAll(state: Bool) {
+        for key in childrens {
+            key.state = state
+            if key.childrens.count != 0 {
+                key.setStateToAll(state: state)
+            }
+        }
+    }
+    
+    func checkChildrens() {
+        for key in childrens {
+            if key.state {
+                state = true
+                parent?.checkChildrens()
+                return
+            }
+        }
+        self.state = false
+    }
 }
