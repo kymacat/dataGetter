@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="EnableViewController" customModule="dataGetter" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="390"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <visualEffectView blendingMode="behindWindow" material="mediumLight" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="s0E-AN-1ig">
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="390"/>
+                </visualEffectView>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F8g-ok-V2W">
+                    <rect key="frame" x="38" y="13" width="204" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="YBU-Ss-glE"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="192" id="zyf-3z-7HZ"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Enable Extension" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Q6a-9T-fuV">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="enableExtensionButtonAction:" target="-2" id="mkq-Cl-5KK"/>
+                    </connections>
+                </button>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rD7-Cy-7x2">
+                    <rect key="frame" x="12" y="126" width="256" height="256"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="rD7-Cy-7x2" secondAttribute="height" multiplier="1:1" id="FbD-ue-7p9"/>
+                        <constraint firstAttribute="width" constant="256" id="y9Q-rE-iYz"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="icon" id="lXI-ps-QM0"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8gQ-mV-xOS">
+                    <rect key="frame" x="57" y="80" width="167" height="38"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Data getter" id="Z9e-Jt-PJR">
+                        <font key="font" metaFont="systemMedium" size="32"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="Zbz-us-8zz" userLabel="GitHub Button">
+                    <rect key="frame" x="234" y="86" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="lp1-5S-FUS"/>
+                        <constraint firstAttribute="width" constant="20" id="qi0-h1-Bv0"/>
+                    </constraints>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="LogoGitHub" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="MkX-Hh-038">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="gitHubButtonAction:" target="-2" id="xoL-PI-tLX"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="8gQ-mV-xOS" firstAttribute="centerX" secondItem="rD7-Cy-7x2" secondAttribute="centerX" id="2Fj-95-j8k"/>
+                <constraint firstItem="s0E-AN-1ig" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="2W5-Gd-5gZ"/>
+                <constraint firstAttribute="bottom" secondItem="s0E-AN-1ig" secondAttribute="bottom" id="6BF-Gb-EcR"/>
+                <constraint firstItem="F8g-ok-V2W" firstAttribute="centerX" secondItem="s0E-AN-1ig" secondAttribute="centerX" id="GtH-1B-4CG"/>
+                <constraint firstItem="Zbz-us-8zz" firstAttribute="leading" secondItem="8gQ-mV-xOS" secondAttribute="trailing" constant="12" id="KG3-oy-pT7"/>
+                <constraint firstAttribute="bottom" secondItem="F8g-ok-V2W" secondAttribute="bottom" constant="20" symbolic="YES" id="KZh-6r-HeS"/>
+                <constraint firstItem="F8g-ok-V2W" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="N4t-Xm-VI0"/>
+                <constraint firstItem="F8g-ok-V2W" firstAttribute="top" secondItem="8gQ-mV-xOS" secondAttribute="bottom" constant="36" id="PIV-oc-OqR"/>
+                <constraint firstItem="s0E-AN-1ig" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="ZnW-gR-hG3"/>
+                <constraint firstItem="8gQ-mV-xOS" firstAttribute="top" secondItem="rD7-Cy-7x2" secondAttribute="bottom" constant="8" id="c7c-Qp-v9G"/>
+                <constraint firstItem="Zbz-us-8zz" firstAttribute="centerY" secondItem="8gQ-mV-xOS" secondAttribute="centerY" constant="3" id="f59-6M-Vsv"/>
+                <constraint firstItem="rD7-Cy-7x2" firstAttribute="width" secondItem="rD7-Cy-7x2" secondAttribute="height" multiplier="1:1" id="tHg-vc-VcA"/>
+                <constraint firstItem="F8g-ok-V2W" firstAttribute="centerX" secondItem="8gQ-mV-xOS" secondAttribute="centerX" id="wXc-eW-0Ir"/>
+            </constraints>
+            <point key="canvasLocation" x="38" y="95"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="LogoGitHub" width="16" height="16"/>
+        <image name="icon" width="512" height="512"/>
+    </resources>
+</document>

@@ -56,10 +56,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let controller = ValuesViewController(json: json)
             window?.contentViewController = controller
         } else {
-            NSApplication.shared.terminate(nil)
+            let controller = EnableViewController()
+            window?.contentViewController = controller
+            window?.setContentSize(NSSize(width: 280, height: 390))
+            window?.styleMask.remove(.resizable)
         }
     
         
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
 
 }
