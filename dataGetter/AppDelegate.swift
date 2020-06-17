@@ -55,10 +55,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let json = json {
             let controller = ValuesViewController(json: json)
             window?.contentViewController = controller
+            window?.minSize = NSSize(width: 700, height: 270)
         } else {
             let controller = EnableViewController()
             window?.contentViewController = controller
-            window?.setContentSize(NSSize(width: 280, height: 390))
             window?.styleMask.remove(.resizable)
         }
     
